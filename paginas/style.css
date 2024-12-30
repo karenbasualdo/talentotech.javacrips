@@ -1,0 +1,185 @@
+body {
+    font-family: 'Montserrat', sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+header {
+    background-color: #4CAF50;
+    color: white;
+    padding: 1rem;
+}
+
+main {
+    padding: 2rem 0;
+}
+.carousel-inner img {
+    width: 500px; /* Ajusta el ancho  */
+    height: 500px; /* Ajusta la altura  */
+    object-fit: contain; /* Asegura que la imagen no se deforme */
+    margin: 0 auto; /* Centra las imágenes dentro del carrusel */
+}
+.carousel-caption {
+    color: rgb(0, 0, 0) ;
+}
+
+.card button, form button, .button-link {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 0.7rem;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.card button:hover, form button:hover, .button-link:hover {
+    background-color: #367c39;
+}
+
+.productos-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); /* Ajusta el número de columnas */
+    gap: 1rem;
+}
+
+
+.card-img-top {
+    width: 100%; /* Ancho completo del contenedor */
+    height: auto; /* Ajusta automáticamente la altura */
+    max-width: 200px; /* Ancho máximo de la imagen */
+    max-height: 200px; /* Alto máximo de la imagen */
+    object-fit: contain; /* Mantener proporción sin distorsión */
+    margin: 0 auto; /* Centrar la imagen */
+    border: 1px solid #ddd; /* Agregar borde */
+    border-radius: 5px; /* Redondear esquinas */
+}
+
+
+.resenas-grid {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.card .text-danger {
+    font-weight: bold;
+    font-size: 1.2rem;
+}
+
+.card .text-decoration-line-through {
+    color: #888;
+    font-size: 1rem;
+}
+
+#contacto h2 {
+    color: #4CAF50;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+#contacto form .btn {
+    background-color: #4CAF50;
+    border: none;
+    transition: background-color 0.3s ease;
+}
+
+#contacto form .btn:hover {
+    background-color: #367c39;
+}
+
+#contacto textarea::placeholder,
+#contacto input::placeholder {
+    color: #aaa;
+    font-style: italic;
+}
+.resenas-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+    margin-top: 1rem;
+}
+
+.resena {
+    border: 1px solid #ddd;
+    padding: 1rem;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.resena-text {
+    font-size: 1rem;
+    color: #333;
+    margin-bottom: 0.5rem;
+}
+
+.resena-autor {
+    font-size: 0.9rem;
+    color: #666;
+    font-weight: bold;
+    text-align: right;
+}
+
+
+@media (max-width: 768px) {
+    .resenas-grid {
+        flex-direction: column;
+    }
+}
+
+@media (max-width: 768px) {
+    .productos-grid {
+        grid-template-columns: 1fr; /* Solo una columna en pantallas pequeñas */
+    }
+    .carousel-inner img {
+        height: 300px; /* Ajusta la altura en pantallas más pequeñas */
+    }
+}
+
+/* nueva parte*/
+#carrito img {
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    object-fit: cover;
+}
+
+#carrito .d-flex {
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 1rem;
+    margin-bottom: 1rem;
+}
+
+#carrito button {
+    background-color: #dc3545;
+    border: none;
+    padding: 0.5rem;
+    color: white;
+    border-radius: 5px;
+}
+
+#carrito button:hover {
+    background-color: #a71d2a;
+}
+
+@media (max-width: 768px) {
+    #contacto {
+        padding: 1rem;
+    }
+    #contacto form {
+        flex-direction: column;
+    }
+    #contacto form .form-label {
+        font-size: 1rem;
+    }
+}
+
+/*animacion boton */
+button {
+    transition: transform 0.3s ease;
+}
+button:hover {
+    transform: scale(1.1);
+}
+
+
