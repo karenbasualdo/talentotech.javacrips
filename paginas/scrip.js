@@ -5,17 +5,26 @@ if (typeof(Storage) !== "undefined") {
     console.log("localStorage no está disponible");
 }
 
-// Detectar la ruta base según el archivo actual
-const rutaBase = window.location.pathname.includes('index.html') ? './' :
-                 window.location.pathname.includes('carrito.html') ? '../' :
-                 '../'; // Para panes.html y otros dentro de "paginas/"
+
+// Función para generar rutas relativas
+function obtenerRutaRelativa(imagen) {
+    const baseActual = window.location.pathname.includes('/paginas/') ? '../' : './';
+    return `${baseActual}${imagen}`;
+}
+
+// Función para rutas absolutas
+function obtenerRutaAbsoluta(imagen) {
+    return `${window.location.origin}/${imagen}`; // Construye una ruta absoluta basada en el dominio
+}
+
+// Ajustar la ruta base para las imágenes dependiendo del entorno de despliegue
 
 const productosLocales = [
     {
         id: "1",
         nombre: "Cerro Azul Pan de Molde Sin TACC",
         precio: 5000,
-        imagen: `${rutaBase}imagenes/cerro-azul-pan-de-molde-sin-tacc-x-450-grs.jpg`,
+        imagen: obtenerRutaRelativa("imagenes/cerro-azul-pan-de-molde-sin-tacc-x-450-grs.jpg"),
         descripcion: "Delicioso pan sin gluten perfecto para todos tus desayunos.",
         oferta: 25,
         categoria: "panes"
@@ -24,7 +33,7 @@ const productosLocales = [
         id: "2",
         nombre: "Fideos Penne Rigate Libre de Gluten",
         precio: 3500,
-        imagen: `${rutaBase}imagenes/penne_rigati.png`,
+        imagen: obtenerRutaRelativa("imagenes/penne_rigati.png"),
         descripcion: "Pasta 100% libre de gluten para tus comidas favoritas.",
         oferta: 35,
         categoria: "pastas"
@@ -33,7 +42,7 @@ const productosLocales = [
         id: "3",
         nombre: "Crackers Clásicas SMAMS",
         precio: 2000,
-        imagen: `${rutaBase}imagenes/cracker-clasicas-smams-celinda1-2169fb9d4d46ccba1216957705700661-640-0.webp`,
+        imagen: obtenerRutaRelativa("imagenes/cracker-clasicas-smams-celinda1-2169fb9d4d46ccba1216957705700661-640-0.webp"),
         descripcion: "Galletas crujientes y sabrosas, libres de gluten.",
         oferta: 15,
         categoria: "galletas"
@@ -42,7 +51,7 @@ const productosLocales = [
         id: "4",
         nombre: "Barritas de Cereal Sin Gluten Pony",
         precio: 750,
-        imagen: `${rutaBase}imagenes/Barritas de Cereal Sin tacc.jpeg`,
+        imagen: obtenerRutaRelativa("imagenes/Barritas de Cereal Sin tacc.jpeg"),
         descripcion: "Energía y sabor en cada bocado.",
         oferta: 10,
         categoria: "snacks"
@@ -51,7 +60,7 @@ const productosLocales = [
         id: "5",
         nombre: "Chips de Batata",
         precio: 3500,
-        imagen: `${rutaBase}imagenes/Alwa_Chips_de_Batatas_Rústicas_100__Naturales_Sin_TACC,_80_g.webp`,
+        imagen: obtenerRutaRelativa("imagenes/Alwa_Chips_de_Batatas_Rústicas_100__Naturales_Sin_TACC,_80_g.webp"),
         descripcion: "Crocantes y saludables, ideales para picar.",
         oferta: 15,
         categoria: "snacks"
@@ -60,7 +69,7 @@ const productosLocales = [
         id: "6",
         nombre: "Galletas pepas Delicel",
         precio: 3500,
-        imagen: `${rutaBase}imagenes/pepas-delicel.webp`,
+        imagen: obtenerRutaRelativa("imagenes/pepas-delicel.webp"),
         descripcion: "Ideales para acompañar tus desayunos o meriendas.",
         oferta: 45,
         categoria: "galletas"
@@ -69,7 +78,7 @@ const productosLocales = [
         id: "7",
         nombre: "Cookies de Chocolate Delicel",
         precio: 3200,
-        imagen: `${rutaBase}imagenes/cookies-chocolate.webp`,
+        imagen: obtenerRutaRelativa("imagenes/cookies-chocolate.webp"),
         descripcion: "Galletas dulces con trozos de chocolate, libres de gluten.",
         oferta: 45,
         categoria: "galletas"
@@ -78,7 +87,7 @@ const productosLocales = [
         id: "8",
         nombre: "Fideos Spaghetti Blue Patna",
         precio: 7000,
-        imagen: `${rutaBase}imagenes/spaghettis-blue-patna-fideos-celinda-alimentos-500-g-sin-tac.jpg`,
+        imagen: obtenerRutaRelativa("imagenes/spaghettis-blue-patna-fideos-celinda-alimentos-500-g-sin-tac.jpg"),
         descripcion: "La clásica pasta ahora sin gluten.",
         oferta: 35,
         categoria: "pastas"
@@ -87,13 +96,12 @@ const productosLocales = [
         id: "9",
         nombre: "Pan de Molde Schar",
         precio: 6735,
-        imagen: `${rutaBase}imagenes/7898954933467_02.webp`,
+        imagen: obtenerRutaRelativa("imagenes/7898954933467_02.webp"),
         descripcion: "Pan de molde para sandwich sin tacc",
         oferta: 20,
         categoria: "panes"
     },
 ];
-
 
 // Actualizar el contador del carrito
 function actualizarContadorCarrito() {
@@ -176,9 +184,10 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 
+
 function agregarImagenCarrito(imagen) {
     const esUrlCompleta = imagen.startsWith("http") || imagen.startsWith("https");
-    return esUrlCompleta ? imagen : `${rutaBase}${imagen}`;
+    return esUrlCompleta ? imagen : imagen; // compatibilidad
 }
 
 
@@ -218,8 +227,52 @@ function actualizarCarrito() {
 
     if (totalCompra) totalCompra.textContent = `Total: $${total.toFixed(2)}`;
 }
+//////////////////////
+///nueva parte
+//////////////////////
+//Mostrar detalles del producto (productos locales o API)
+function mostrarDetalleProducto(event) {
+    const idProducto = event.target.getAttribute("data-id");
+    // Buscar el producto en productos locales y API combinados
+    const producto = [...productosLocales, ...productosAPI].find(p => p.id === idProducto);
 
-// Mostrar productos en la tienda (index.html y categorías específicas)
+    if (!producto) return console.error("Producto no encontrado.");
+
+    const modalHTML = `
+        <div id="modal-detalle" class="modal fade" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">${producto.nombre}</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body text-center">
+                        <img src="${producto.imagen}" alt="${producto.nombre}" style="width: 100%; max-width: 300px; margin-bottom: 20px;">
+                        <p>${producto.descripcion}</p>
+                        <p><strong>Precio: $${producto.precio}</strong></p>
+                        ${producto.oferta ? `<p class="text-success">Oferta: ${producto.oferta}% de descuento</p>` : ""}
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    `;
+
+    const modalContenedor = document.createElement("div");
+    modalContenedor.innerHTML = modalHTML;
+    document.body.appendChild(modalContenedor);
+
+    const modal = new bootstrap.Modal(modalContenedor.querySelector(".modal"));
+    modal.show();
+
+    modalContenedor.querySelector(".modal").addEventListener("hidden.bs.modal", () => {
+        modalContenedor.remove();
+    });
+}
+
+// Mostrar productos en la tienda (index.html y categorías )
 function mostrarProductos(productos) {
     const contenedor = document.getElementById("productos");
     if (!contenedor) {
@@ -228,10 +281,10 @@ function mostrarProductos(productos) {
     }
 
     const categoria = contenedor.dataset.categoria; // Leer la categoría desde el atributo
-    
+
     const productosFiltrados = categoria ? productos.filter(p => p.categoria === categoria) : productos;
     contenedor.innerHTML = ""; // Limpiar el contenedor de productos
-    
+
     contenedor.classList.add("row");
 
     productosFiltrados.forEach(producto => {
@@ -253,6 +306,7 @@ function mostrarProductos(productos) {
                     </div>
                     <div class="card-footer">
                         <button class="btn btn-success comprar" data-id="${producto.id}" data-nombre="${producto.nombre}" data-precio="${precioOferta}" data-imagen="${producto.imagen}">Comprar</button>
+                        <button class="btn btn-info detalle" data-id="${producto.id}">Ver Detalle</button>
                     </div>
                 </div>
             </div>
@@ -260,9 +314,14 @@ function mostrarProductos(productos) {
         contenedor.innerHTML += card;
     });
 
-    // Agregar el evento para los botones de "Comprar"
+    // Agregar el evento para los botones "Comprar"
     document.querySelectorAll(".comprar").forEach(boton => {
         boton.addEventListener("click", agregarProducto);
+    });
+
+    // Agregar el evento para los botones "Ver Detalle"
+    document.querySelectorAll(".detalle").forEach(boton => {
+        boton.addEventListener("click", mostrarDetalleProducto);
     });
 }
 
@@ -278,13 +337,16 @@ function ajustarImagen(imagen) {
     }
 }
 
-
-
 // Función para generar un precio aleatorio dentro de un rango
+
 function generarPrecioAleatorio() {
     // Genera un precio entre 500 y 5000 
     return Math.floor(Math.random() * (5000 - 500 + 1)) + 500;
 }
+
+
+// Array para almacenar productos de la API
+let productosAPI = [];
 
 // Cargar productos desde la API de Open Food Facts
 async function cargarProductosDesdeAPI() {
@@ -292,14 +354,14 @@ async function cargarProductosDesdeAPI() {
     try {
         const response = await fetch(url);
         const data = await response.json();
-        
+
         // Procesar los productos obtenidos de la API
-        const productos = data.products.map(producto => {
+        productosAPI = data.products.map(producto => {
             // Verificar si ya se ha guardado un precio para el producto en localStorage
             let precio = localStorage.getItem(producto.code); // Usamos el 'code' del producto como clave
 
             if (!precio) {
-                // Si no existe, asignamos un precio aleatorio y lo guardamos en localStorage
+                //  asignamos un precio aleatorio y lo guardamos en localStorage
                 precio = generarPrecioAleatorio();
                 localStorage.setItem(producto.code, precio);
             } else {
@@ -309,21 +371,20 @@ async function cargarProductosDesdeAPI() {
 
             return {
                 id: producto.code, // Use el 'code' del producto como ID
-                nombre: producto.product_name, // Nombre del producto
+                nombre: producto.product_name || "Producto sin nombre", // Nombre del producto
                 precio: precio, // Precio aleatorio fijado
-                imagen: producto.image_url || 'default_image.jpg', // Si no hay imagen, se usa una predeterminada
-                descripcion: producto.ingredients_text || 'Sin descripción', // Descripción del producto
+                imagen: producto.image_url || 'default_image.jpg', //  se usa una predeterminada
+                descripcion: producto.ingredients_text || 'Sin descripción disponible', // Descripción del producto
                 oferta: 0 // Ofertas de producto
             };
         });
 
         // Mostrar los productos combinados (locales y API)
-        mostrarProductos([...productosLocales, ...productos]); // Combina productos locales y de la API
+        mostrarProductos([...productosLocales, ...productosAPI]);
     } catch (error) {
         console.error("Error al cargar los productos de la API", error);
     }
 }
-
 
 // Inicializar productos al cargar
 document.addEventListener("DOMContentLoaded", function () {
@@ -353,5 +414,3 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 });
-
-
